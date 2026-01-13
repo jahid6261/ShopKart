@@ -24,8 +24,8 @@ class Product(models.Model):
     price=models.DecimalField(max_digits=10,decimal_places=2)
     stock=models.PositiveBigIntegerField()
     category=models.ForeignKey(Category,on_delete=models.CASCADE, related_name='products')
-    created_at=models.DateField(auto_now_add=True)
-    update_at=models.DateField(auto_now=True)
+    created_at=models.DateField(auto_now_add=True,null=True)
+    update_at=models.DateField(auto_now=True,null=True)
     
     
     def __str__(self):
