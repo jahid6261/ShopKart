@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'product',
     'api',
     'order',
-    'users'
+    'users',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -139,3 +140,10 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
+REST_FRAMEWORK = {
+    'COERCE_DECIMAL_TO_STRING': False,
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ]
+}
