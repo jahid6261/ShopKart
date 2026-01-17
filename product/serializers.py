@@ -1,11 +1,7 @@
 from rest_framework import serializers
-
-from product.models import Category,Product,ProductImage,Review
-
 from decimal import Decimal
+from product.models import Category, Product, Review,ProductImage
 from django.contrib.auth import get_user_model
-
-
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -13,18 +9,17 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name', 'description', 'product_count']
 
-    product_count = serializers.IntegerField(
-        read_only=True, help_text="Return the number product in this category")
+    product_count = serializers.IntegerField(read_only=True)
+
+
 
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    
-
     class Meta:
         model = Product
         fields = ['id', 'name', 'description', 'price',
-                  'stock', 'category', 'price_with_tax', 'images']  # other
+                  'stock', 'category', 'price_with_tax']  # other
 
     price_with_tax = serializers.SerializerMethodField(
         method_name='calculate_tax')
@@ -36,15 +31,8 @@ class ProductSerializer(serializers.ModelSerializer):
         if price < 0:
             raise serializers.ValidationError('Price could not be negative')
         return price
-    
-    
 
 
-        
-        
-        
-      
-      
 class ProductImageSerializer(serializers.ModelSerializer):
     image = serializers.ImageField()
     class Meta:
@@ -62,12 +50,8 @@ class SimpleUserSerializer(serializers.ModelSerializer):
         return obj.get_full_name()
 
 
-
-
-
-
 class ReviewSerializer(serializers.ModelSerializer):
-   
+    
     user = serializers.SerializerMethodField(method_name='get_user')
 
     class Meta:

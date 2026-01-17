@@ -9,11 +9,14 @@ from django_filters.rest_framework import DjangoFilterBackend
 from product.filters import ProductFilter
 from rest_framework.filters import SearchFilter,OrderingFilter
 from product.paginations import DefaultPagination
+from api.permissions import IsAdminOrReadOnly
+from product.permissions import IsReviewAuthorOrReadonly
 
 
 
 
 class CategoryViewSet(ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
     queryset=Category.objects.annotate(
         product_count=Count('products')
     ).all()
@@ -28,11 +31,23 @@ class ProductVieSet(ModelViewSet):
     filter_backends=[DjangoFilterBackend,SearchFilter,OrderingFilter]
     filterset_class=ProductFilter
     pagination_class = DefaultPagination
+    permission_classes = [IsAdminOrReadOnly]
+
     search_fields=['name','description']
     ordering_fields=['price','updated_at']
     
     
+    
+    def destroy(self, request, *args, **kwargs):
+        product = self.get_object()
+        if product.stock > 10:
+            return Response({'message': "Product with stock more than 10 could not be deleted"})
+        self.perform_destroy(product)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    
 class ProductImageViewSet(ModelViewSet):
+    
     serializer_class = ProductImageSerializer
    
 
@@ -45,6 +60,7 @@ class ProductImageViewSet(ModelViewSet):
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
+    permission_classes = [IsReviewAuthorOrReadonly]
     
 
     def perform_create(self, serializer):
