@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg',
     "debug_toolbar",
     'rest_framework',
     'djoser',
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     'order',
     'users',
     'django_filters'
+   
 ]
 
 MIDDLEWARE = [
@@ -166,4 +168,16 @@ DJOSER = {
         'user_create': 'users.serializers.UserCreateSerializer',
         'current_user': 'users.serializers.UserSerializer'
     },
+}
+
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+    
+      'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      }
+   }
 }
