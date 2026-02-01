@@ -22,6 +22,7 @@ from debug_toolbar.toolbar import debug_toolbar_urls
 from drf_yasg import openapi
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
+from django.views.generic import RedirectView
 
 
 schema_view = get_schema_view(
@@ -37,6 +38,7 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 urlpatterns = [
+       path('', RedirectView.as_view(url='/api/v1/', permanent=False)),
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls'), name='api-root'),
     path('auth/', include('djoser.urls')),
