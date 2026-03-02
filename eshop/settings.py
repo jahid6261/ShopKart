@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     "debug_toolbar",
     'rest_framework',
+    "corsheaders",
     'djoser',
     'product',
     'api',
@@ -67,6 +68,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -79,6 +81,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+ 
+]
 ROOT_URLCONF = 'eshop.urls'
 
 TEMPLATES = [
